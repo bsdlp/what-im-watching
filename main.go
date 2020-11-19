@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	OAuthToken        string `split_words:"true" required:"true"`
+	OAuthToken        string `envconfig:"OAUTH_TOKEN" required:"true"`
 	ClientId          string `split_words:"true" required:"true"`
 	TwitchGqlEndpoint string `split_words:"true" default:"https://gql.twitch.tv/gql"`
 }
