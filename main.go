@@ -33,7 +33,8 @@ func main() {
 		log.Fatal("current user is nil")
 	}
 	if currentlyWatching.CurrentUser.Activity == nil {
-		log.Println("not currently watching anything")
+		log.Printf("%s is not currently watching anything", currentlyWatching.CurrentUser.DisplayName)
+		return
 	}
 	log.Printf("%s is currently watching %s", currentlyWatching.CurrentUser.DisplayName, currentlyWatching.CurrentUser.Activity.User.DisplayName)
 }
