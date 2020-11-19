@@ -4,7 +4,16 @@ query GetCurrentlyWatching {
         activity {
             ... on Watching {
                 user {
+                    broadcastSettings {
+                        game {
+                            ... on Directory {
+                                displayName
+                            }
+                        }
+                        title
+                    }
                     displayName
+                    profileURL
                 }
             }
         }

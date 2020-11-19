@@ -53,7 +53,7 @@ func main() {
 		return
 	}
 
-	msg := fmt.Sprintf("%s is currently watching %s", currentlyWatching.CurrentUser.DisplayName, currentlyWatching.CurrentUser.Activity.User.DisplayName)
+	msg := fmt.Sprintf("%s is currently watching %s stream %s: %s", currentlyWatching.CurrentUser.DisplayName, currentlyWatching.CurrentUser.Activity.User.DisplayName, currentlyWatching.CurrentUser.Activity.User.BroadcastSettings.Game.DisplayName, currentlyWatching.CurrentUser.Activity.User.BroadcastSettings.Title)
 	_, _, err = twitterClient.Statuses.Update(msg, nil)
 	if err != nil {
 		log.Printf("error posting: %s", err)

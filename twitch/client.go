@@ -568,7 +568,14 @@ type GetCurrentlyWatching struct {
 		DisplayName string "json:\"displayName\" graphql:\"displayName\""
 		Activity    *struct {
 			User *struct {
+				BroadcastSettings *struct {
+					Game *struct {
+						DisplayName string "json:\"displayName\" graphql:\"displayName\""
+					} "json:\"game\" graphql:\"game\""
+					Title string "json:\"title\" graphql:\"title\""
+				} "json:\"broadcastSettings\" graphql:\"broadcastSettings\""
 				DisplayName string "json:\"displayName\" graphql:\"displayName\""
+				ProfileURL  string "json:\"profileURL\" graphql:\"profileURL\""
 			} "json:\"user\" graphql:\"user\""
 		} "json:\"activity\" graphql:\"activity\""
 	} "json:\"currentUser\" graphql:\"currentUser\""
@@ -580,7 +587,16 @@ const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
 		activity {
 			... on Watching {
 				user {
+					broadcastSettings {
+						game {
+							... on Directory {
+								displayName
+							}
+						}
+						title
+					}
 					displayName
+					profileURL
 				}
 			}
 		}
