@@ -35,7 +35,7 @@ func main() {
 	if currentlyWatching.CurrentUser.Activity == nil {
 		log.Println("not currently watching anything")
 	}
-	log.Printf("%s is currently watching %s", currentlyWatching.DisplayName, currentlyWatching.CurrentUser.Activity.User.DisplayName)
+	log.Printf("%s is currently watching %s", currentlyWatching.CurrentUser.DisplayName, currentlyWatching.CurrentUser.Activity.User.DisplayName)
 }
 
 func setAuth(oauthToken string) func(*http.Request) {
