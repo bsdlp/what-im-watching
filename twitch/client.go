@@ -589,9 +589,7 @@ const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
 				user {
 					broadcastSettings {
 						game {
-							... on Directory {
-								displayName
-							}
+							displayName
 						}
 						title
 					}

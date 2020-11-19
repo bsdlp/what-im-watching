@@ -3889,16 +3889,16 @@ type Clip struct {
 	ViewCount int `json:"viewCount"`
 }
 
-func (Clip) IsTaggedContent()             {}
-func (Clip) IsOnsiteNotificationContent() {}
-func (Clip) IsPostEmbed()                 {}
-func (Clip) IsShareTarget()               {}
-func (Clip) IsVideoShelfItem()            {}
 func (Clip) IsReactableContent()          {}
-func (Clip) IsFeedEmbed()                 {}
-func (Clip) IsShortVideoContent()         {}
+func (Clip) IsShareTarget()               {}
+func (Clip) IsTaggedContent()             {}
 func (Clip) IsShelfContent()              {}
 func (Clip) IsFeedItemContent()           {}
+func (Clip) IsFeedEmbed()                 {}
+func (Clip) IsOnsiteNotificationContent() {}
+func (Clip) IsPostEmbed()                 {}
+func (Clip) IsVideoShelfItem()            {}
+func (Clip) IsShortVideoContent()         {}
 
 // A list of clips related to the subject.
 type ClipConnection struct {
@@ -9963,14 +9963,14 @@ type Game struct {
 	ViewersCount *int `json:"viewersCount"`
 }
 
-func (Game) IsTaggedContent()                 {}
-func (Game) IsOnsiteNotificationContent()     {}
-func (Game) IsDirectory()                     {}
-func (Game) IsShelfTitleContext()             {}
-func (Game) IsRecommendationFeedbackContent() {}
-func (Game) IsTitleTokenNode()                {}
-func (Game) IsShelfContent()                  {}
 func (Game) IsVerticalContentContext()        {}
+func (Game) IsDirectory()                     {}
+func (Game) IsTitleTokenNode()                {}
+func (Game) IsTaggedContent()                 {}
+func (Game) IsShelfTitleContext()             {}
+func (Game) IsShelfContent()                  {}
+func (Game) IsRecommendationFeedbackContent() {}
+func (Game) IsOnsiteNotificationContent()     {}
 
 // GameApplication is an application to associate a game with an organization.
 type GameApplication struct {
@@ -11019,9 +11019,9 @@ type LinkOEmbed struct {
 	Version      string           `json:"version"`
 }
 
-func (LinkOEmbed) IsPostEmbed() {}
-func (LinkOEmbed) IsOEmbed()    {}
 func (LinkOEmbed) IsFeedEmbed() {}
+func (LinkOEmbed) IsOEmbed()    {}
+func (LinkOEmbed) IsPostEmbed() {}
 
 // LinkSSOError is an error that occurs when account linking fails.
 type LinkSSOError struct {
@@ -12684,9 +12684,9 @@ type PhotoOEmbed struct {
 	Width        int              `json:"width"`
 }
 
-func (PhotoOEmbed) IsPostEmbed() {}
 func (PhotoOEmbed) IsOEmbed()    {}
 func (PhotoOEmbed) IsFeedEmbed() {}
+func (PhotoOEmbed) IsPostEmbed() {}
 
 type PlatformEventSetting struct {
 	// Whether the setting is enabled for the given platform.
@@ -13014,8 +13014,8 @@ type Post struct {
 	Self *PostSelfConnection `json:"self"`
 }
 
-func (Post) IsShareTarget()      {}
 func (Post) IsReactableContent() {}
+func (Post) IsShareTarget()      {}
 func (Post) IsFeedItemContent()  {}
 
 type PostPermissionSet struct {
@@ -14922,9 +14922,9 @@ type RichOEmbed struct {
 	Width        int              `json:"width"`
 }
 
-func (RichOEmbed) IsPostEmbed() {}
-func (RichOEmbed) IsFeedEmbed() {}
 func (RichOEmbed) IsOEmbed()    {}
+func (RichOEmbed) IsFeedEmbed() {}
+func (RichOEmbed) IsPostEmbed() {}
 
 // A ritual is an opportunity for a viewer to better connect with a streamer's
 // community by announcing when they reach milestones in the channel.
@@ -17311,13 +17311,13 @@ type Stream struct {
 	Width *int `json:"width"`
 }
 
+func (Stream) IsReactableContent()              {}
+func (Stream) IsFeaturedItemContent()           {}
+func (Stream) IsShareTarget()                   {}
 func (Stream) IsTaggedContent()                 {}
 func (Stream) IsPersonalSectionChannelContent() {}
-func (Stream) IsShareTarget()                   {}
-func (Stream) IsReactableContent()              {}
 func (Stream) IsShelfContent()                  {}
 func (Stream) IsFeedItemContent()               {}
-func (Stream) IsFeaturedItemContent()           {}
 
 // StreamBitrate represents the bitrate of stream session by time.
 type StreamBitrate struct {
@@ -18275,8 +18275,8 @@ type Tag struct {
 	TagName string `json:"tagName"`
 }
 
-func (Tag) IsTitleTokenNode()         {}
 func (Tag) IsVerticalContentContext() {}
+func (Tag) IsTitleTokenNode()         {}
 
 // The frequency of a tag used as filter for a channel.
 type TagAnalytic struct {
@@ -21790,13 +21790,13 @@ type User struct {
 	WithholdingTaxDetail *WithholdingTaxDetail `json:"withholdingTaxDetail"`
 }
 
-func (User) IsPredictionEventActor()      {}
+func (User) IsFeaturedItemContent()       {}
+func (User) IsTitleTokenNode()            {}
 func (User) IsTaggedContent()             {}
+func (User) IsPredictionEventActor()      {}
+func (User) IsPersonalSectionTitleToken() {}
 func (User) IsOnsiteNotificationContent() {}
 func (User) IsFragmentContent()           {}
-func (User) IsTitleTokenNode()            {}
-func (User) IsFeaturedItemContent()       {}
-func (User) IsPersonalSectionTitleToken() {}
 
 // Groups users account health information around security of their account.
 type UserAccountHealth struct {
@@ -22545,19 +22545,19 @@ type Video struct {
 	ViewableAt *time.Time `json:"viewableAt"`
 }
 
-func (Video) IsTaggedContent()                 {}
-func (Video) IsOnsiteNotificationContent()     {}
-func (Video) IsPostEmbed()                     {}
-func (Video) IsShareTarget()                   {}
-func (Video) IsPremiereItem()                  {}
-func (Video) IsCollectionItem()                {}
-func (Video) IsVideoShelfItem()                {}
 func (Video) IsReactableContent()              {}
-func (Video) IsFeedEmbed()                     {}
-func (Video) IsRecommendationFeedbackContent() {}
-func (Video) IsShelfContent()                  {}
-func (Video) IsFeedItemContent()               {}
 func (Video) IsFeaturedItemContent()           {}
+func (Video) IsShareTarget()                   {}
+func (Video) IsTaggedContent()                 {}
+func (Video) IsShelfContent()                  {}
+func (Video) IsCollectionItem()                {}
+func (Video) IsFeedItemContent()               {}
+func (Video) IsRecommendationFeedbackContent() {}
+func (Video) IsFeedEmbed()                     {}
+func (Video) IsOnsiteNotificationContent()     {}
+func (Video) IsPremiereItem()                  {}
+func (Video) IsPostEmbed()                     {}
+func (Video) IsVideoShelfItem()                {}
 
 // A video bookmark.
 type VideoBookmark struct {
@@ -22812,9 +22812,9 @@ type VideoOEmbed struct {
 	Width        int              `json:"width"`
 }
 
+func (VideoOEmbed) IsFeedEmbed() {}
 func (VideoOEmbed) IsOEmbed()    {}
 func (VideoOEmbed) IsPostEmbed() {}
-func (VideoOEmbed) IsFeedEmbed() {}
 
 // Options to include private videos.
 type VideoOptions struct {
