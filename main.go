@@ -45,10 +45,6 @@ func main() {
 	}
 	if currentlyWatching.CurrentUser.Activity == nil {
 		msg := fmt.Sprintf("%s is not currently watching anything", currentlyWatching.CurrentUser.DisplayName)
-		_, _, err = twitterClient.Statuses.Update(msg, nil)
-		if err != nil {
-			log.Printf("error posting: %s", err)
-		}
 		log.Println(msg)
 		return
 	}
