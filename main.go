@@ -50,7 +50,7 @@ func main() {
 	}
 
 	streamer := currentlyWatching.CurrentUser.Activity.User
-	msg := fmt.Sprintf("%s is currently watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
+	msg := fmt.Sprintf("%s is now watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
 	_, _, err = twitterClient.Statuses.Update(msg, nil)
 	if err != nil {
 		log.Printf("error posting: %s", err)
