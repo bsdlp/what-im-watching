@@ -1,0 +1,12 @@
+query GetCurrentlyWatching {
+    currentUser() {
+        displayName
+        activity {
+            ... on Watching {
+                user {
+                    displayName
+                }
+            }
+        }
+    }
+}
