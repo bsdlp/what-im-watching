@@ -1,0 +1,15 @@
+model:
+  package: generated
+  filename: ./generated/models_gen.go # https://github.com/99designs/gqlgen/tree/master/plugin/modelgen
+client:
+  package: generated
+  filename: ./generated/client.go # Where should any generated client go?
+models:
+  ID:
+    model: github.com/99designs/gqlgen/graphql.ID
+endpoint:
+  url: https://api.twitch.tv/gql # Where do you want to send your request?
+  headers:
+    Client-Id: "kimne78kx3ncx6brgo4mv6wki5h1ko" # support environment variables
+query:
+  - "./query/*.graphql" # Where are all the query files located?

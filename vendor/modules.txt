@@ -1,0 +1,62 @@
+# github.com/99designs/gqlgen v0.13.0
+## explicit
+github.com/99designs/gqlgen/api
+github.com/99designs/gqlgen/codegen
+github.com/99designs/gqlgen/codegen/config
+github.com/99designs/gqlgen/codegen/templates
+github.com/99designs/gqlgen/graphql
+github.com/99designs/gqlgen/internal/code
+github.com/99designs/gqlgen/internal/imports
+github.com/99designs/gqlgen/internal/rewrite
+github.com/99designs/gqlgen/plugin
+github.com/99designs/gqlgen/plugin/federation
+github.com/99designs/gqlgen/plugin/modelgen
+github.com/99designs/gqlgen/plugin/resolvergen
+# github.com/Yamashou/gqlgenc v0.0.0-20201118110422-c5e4e29019a7
+## explicit
+github.com/Yamashou/gqlgenc
+github.com/Yamashou/gqlgenc/client
+github.com/Yamashou/gqlgenc/clientgen
+github.com/Yamashou/gqlgenc/config
+github.com/Yamashou/gqlgenc/generator
+github.com/Yamashou/gqlgenc/graphqljson
+github.com/Yamashou/gqlgenc/introspection
+# github.com/agnivade/levenshtein v1.1.0
+github.com/agnivade/levenshtein
+# github.com/pkg/errors v0.9.1
+github.com/pkg/errors
+# github.com/vektah/gqlparser/v2 v2.1.0
+github.com/vektah/gqlparser/v2
+github.com/vektah/gqlparser/v2/ast
+github.com/vektah/gqlparser/v2/formatter
+github.com/vektah/gqlparser/v2/gqlerror
+github.com/vektah/gqlparser/v2/lexer
+github.com/vektah/gqlparser/v2/parser
+github.com/vektah/gqlparser/v2/validator
+github.com/vektah/gqlparser/v2/validator/rules
+# golang.org/x/mod v0.3.0
+golang.org/x/mod/module
+golang.org/x/mod/semver
+# golang.org/x/tools v0.0.0-20201118215654-4d9c4f8a78b0
+## explicit
+golang.org/x/tools/go/ast/astutil
+golang.org/x/tools/go/gcexportdata
+golang.org/x/tools/go/internal/gcimporter
+golang.org/x/tools/go/internal/packagesdriver
+golang.org/x/tools/go/packages
+golang.org/x/tools/imports
+golang.org/x/tools/internal/event
+golang.org/x/tools/internal/event/core
+golang.org/x/tools/internal/event/keys
+golang.org/x/tools/internal/event/label
+golang.org/x/tools/internal/fastwalk
+golang.org/x/tools/internal/gocommand
+golang.org/x/tools/internal/gopathwalk
+golang.org/x/tools/internal/imports
+golang.org/x/tools/internal/packagesinternal
+golang.org/x/tools/internal/typesinternal
+# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+golang.org/x/xerrors
+golang.org/x/xerrors/internal
+# gopkg.in/yaml.v2 v2.3.0
+gopkg.in/yaml.v2
