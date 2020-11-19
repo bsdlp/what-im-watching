@@ -23,6 +23,18 @@ github.com/Yamashou/gqlgenc/graphqljson
 github.com/Yamashou/gqlgenc/introspection
 # github.com/agnivade/levenshtein v1.1.0
 github.com/agnivade/levenshtein
+# github.com/cenkalti/backoff v2.1.1+incompatible
+github.com/cenkalti/backoff
+# github.com/dghubble/go-twitter v0.0.0-20201011215211-4b180d0cc78d
+## explicit
+github.com/dghubble/go-twitter/twitter
+# github.com/dghubble/oauth1 v0.6.0
+## explicit
+github.com/dghubble/oauth1
+# github.com/dghubble/sling v1.3.0
+github.com/dghubble/sling
+# github.com/google/go-querystring v1.0.0
+github.com/google/go-querystring/query
 # github.com/kelseyhightower/envconfig v1.4.0 => github.com/bsdlp/envconfig v1.5.0
 ## explicit
 github.com/kelseyhightower/envconfig
