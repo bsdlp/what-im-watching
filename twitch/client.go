@@ -112,7 +112,6 @@ type Query struct {
 	StreamPlaybackAccessToken             *PlaybackAccessToken                   "json:\"streamPlaybackAccessToken\" graphql:\"streamPlaybackAccessToken\""
 	Streams                               *StreamConnection                      "json:\"streams\" graphql:\"streams\""
 	SubscriptionProduct                   *SubscriptionProduct                   "json:\"subscriptionProduct\" graphql:\"subscriptionProduct\""
-	SubscriptionTokenBundleOffers         []*Offer                               "json:\"subscriptionTokenBundleOffers\" graphql:\"subscriptionTokenBundleOffers\""
 	SubscriptionTokenBundleProducts       []*SubscriptionTokenBundleProduct      "json:\"subscriptionTokenBundleProducts\" graphql:\"subscriptionTokenBundleProducts\""
 	SubscriptionTokenProductConfig        *SubscriptionTokenProductConfig        "json:\"subscriptionTokenProductConfig\" graphql:\"subscriptionTokenProductConfig\""
 	SupportedCloudBroadcastProviders      []*CloudBroadcastProviderKey           "json:\"supportedCloudBroadcastProviders\" graphql:\"supportedCloudBroadcastProviders\""
@@ -552,6 +551,7 @@ type Mutation struct {
 	UpdateVisibility                                                 *UpdateVisibilityPayload                                                 "json:\"updateVisibility\" graphql:\"updateVisibility\""
 	UpdateWhisperSettings                                            *UpdateWhisperSettingsPayload                                            "json:\"updateWhisperSettings\" graphql:\"updateWhisperSettings\""
 	UpdateWhisperThread                                              *UpdateWhisperThreadPayload                                              "json:\"updateWhisperThread\" graphql:\"updateWhisperThread\""
+	UploadCompetitionImage                                           *UploadCompetitionImagePayload                                           "json:\"uploadCompetitionImage\" graphql:\"uploadCompetitionImage\""
 	UseChatNotificationToken                                         *UseChatNotificationTokenPayload                                         "json:\"useChatNotificationToken\" graphql:\"useChatNotificationToken\""
 	ValidateVerificationCode                                         *ValidateVerificationCodePayload                                         "json:\"validateVerificationCode\" graphql:\"validateVerificationCode\""
 	VerifyContactMethod                                              *VerifyContactMethodPayload                                              "json:\"verifyContactMethod\" graphql:\"verifyContactMethod\""
@@ -574,6 +574,14 @@ type GetCurrentlyWatching struct {
 					} "json:\"game\" graphql:\"game\""
 					Title string "json:\"title\" graphql:\"title\""
 				} "json:\"broadcastSettings\" graphql:\"broadcastSettings\""
+				Channel *struct {
+					SocialMedias []*struct {
+						Name  *string "json:\"name\" graphql:\"name\""
+						Title string  "json:\"title\" graphql:\"title\""
+						URL   string  "json:\"url\" graphql:\"url\""
+					} "json:\"socialMedias\" graphql:\"socialMedias\""
+				} "json:\"channel\" graphql:\"channel\""
+				ID          string "json:\"id\" graphql:\"id\""
 				DisplayName string "json:\"displayName\" graphql:\"displayName\""
 				ProfileURL  string "json:\"profileURL\" graphql:\"profileURL\""
 			} "json:\"user\" graphql:\"user\""
@@ -593,6 +601,14 @@ const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
 						}
 						title
 					}
+					channel {
+						socialMedias {
+							name
+							title
+							url
+						}
+					}
+					id
 					displayName
 					profileURL
 				}

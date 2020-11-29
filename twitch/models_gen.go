@@ -3889,16 +3889,16 @@ type Clip struct {
 	ViewCount int `json:"viewCount"`
 }
 
-func (Clip) IsReactableContent()          {}
-func (Clip) IsShareTarget()               {}
-func (Clip) IsTaggedContent()             {}
-func (Clip) IsShelfContent()              {}
-func (Clip) IsFeedItemContent()           {}
-func (Clip) IsFeedEmbed()                 {}
-func (Clip) IsOnsiteNotificationContent() {}
 func (Clip) IsPostEmbed()                 {}
+func (Clip) IsShelfContent()              {}
 func (Clip) IsVideoShelfItem()            {}
+func (Clip) IsTaggedContent()             {}
+func (Clip) IsShareTarget()               {}
+func (Clip) IsReactableContent()          {}
 func (Clip) IsShortVideoContent()         {}
+func (Clip) IsFeedItemContent()           {}
+func (Clip) IsOnsiteNotificationContent() {}
+func (Clip) IsFeedEmbed()                 {}
 
 // A list of clips related to the subject.
 type ClipConnection struct {
@@ -4839,6 +4839,14 @@ type CompetitionFormat struct {
 	Type FormatType `json:"type"`
 }
 
+// Identifiers for the competition image.
+type CompetitionImageUpload struct {
+	// ID of the upload.
+	ID string `json:"id"`
+	// URL at which clients can access the image.
+	URL string `json:"url"`
+}
+
 // A Lobby in a phase.
 type CompetitionLobby struct {
 	// Lobby ID of lobby to advance the winner to.
@@ -5049,6 +5057,14 @@ type CompetitionTeamEdge struct {
 type CompetitionTeamSelfEdge struct {
 	// Whether the user is the captain.
 	IsCaptain bool `json:"isCaptain"`
+}
+
+// Information to communicate to the user about an error state.
+type CompetitionUploadImageError struct {
+	// The error code.
+	Code CompetitionUploadImageErrorCode `json:"code"`
+	// The error message string.
+	Message string `json:"message"`
 }
 
 // The required configuration to activate a component extension.
@@ -7089,12 +7105,18 @@ func (DashboardActivityFeedActivityHosting) IsDashboardActivityFeedActivity() {}
 type DashboardActivityFeedActivityHypeTrainEvent struct {
 	// Status of the corresponding alert.
 	AlertStatus *DashboardActivityFeedActivityAlertStatus `json:"alertStatus"`
+	// The highest level completed on this HypeTrain.
+	CompletedLevel *int `json:"completedLevel"`
 	// Unique identifier of the Hype Train.
 	HypeTrainID string `json:"hypeTrainID"`
 	// Unique identifier for this HypeTrain event.
 	ID string `json:"id"`
 	// When this HypeTrain event occurred.
 	Timestamp time.Time `json:"timestamp"`
+	// The total amount of Bits contributed on this HypeTrain.
+	TotalBitsAmount *int `json:"totalBitsAmount"`
+	// The total count of subs and sub gifts contributed on this HypeTrain.
+	TotalSubsCount *int `json:"totalSubsCount"`
 	// The type of this HypeTrain event.
 	Type HypeTrainEventType `json:"type"`
 }
@@ -9963,12 +9985,12 @@ type Game struct {
 	ViewersCount *int `json:"viewersCount"`
 }
 
-func (Game) IsVerticalContentContext()        {}
-func (Game) IsDirectory()                     {}
-func (Game) IsTitleTokenNode()                {}
-func (Game) IsTaggedContent()                 {}
-func (Game) IsShelfTitleContext()             {}
 func (Game) IsShelfContent()                  {}
+func (Game) IsVerticalContentContext()        {}
+func (Game) IsTaggedContent()                 {}
+func (Game) IsTitleTokenNode()                {}
+func (Game) IsShelfTitleContext()             {}
+func (Game) IsDirectory()                     {}
 func (Game) IsRecommendationFeedbackContent() {}
 func (Game) IsOnsiteNotificationContent()     {}
 
@@ -10131,7 +10153,7 @@ type GenerateSecondFactorQRCodeInput struct {
 type GenerateSecondFactorQRCodePayload struct {
 	// error code and localized error.
 	Error *GenerateSecondFactorQRCodeError `json:"error"`
-	// qrCode will be a url to a png file.
+	// qrCode will be a base64 encoded png file.
 	QrCode *string `json:"qrCode"`
 }
 
@@ -11019,9 +11041,9 @@ type LinkOEmbed struct {
 	Version      string           `json:"version"`
 }
 
+func (LinkOEmbed) IsPostEmbed() {}
 func (LinkOEmbed) IsFeedEmbed() {}
 func (LinkOEmbed) IsOEmbed()    {}
-func (LinkOEmbed) IsPostEmbed() {}
 
 // LinkSSOError is an error that occurs when account linking fails.
 type LinkSSOError struct {
@@ -12684,9 +12706,9 @@ type PhotoOEmbed struct {
 	Width        int              `json:"width"`
 }
 
+func (PhotoOEmbed) IsPostEmbed() {}
 func (PhotoOEmbed) IsOEmbed()    {}
 func (PhotoOEmbed) IsFeedEmbed() {}
-func (PhotoOEmbed) IsPostEmbed() {}
 
 type PlatformEventSetting struct {
 	// Whether the setting is enabled for the given platform.
@@ -13014,8 +13036,8 @@ type Post struct {
 	Self *PostSelfConnection `json:"self"`
 }
 
-func (Post) IsReactableContent() {}
 func (Post) IsShareTarget()      {}
+func (Post) IsReactableContent() {}
 func (Post) IsFeedItemContent()  {}
 
 type PostPermissionSet struct {
@@ -14922,9 +14944,9 @@ type RichOEmbed struct {
 	Width        int              `json:"width"`
 }
 
+func (RichOEmbed) IsPostEmbed() {}
 func (RichOEmbed) IsOEmbed()    {}
 func (RichOEmbed) IsFeedEmbed() {}
-func (RichOEmbed) IsPostEmbed() {}
 
 // A ritual is an opportunity for a viewer to better connect with a streamer's
 // community by announcing when they reach milestones in the channel.
@@ -17311,13 +17333,13 @@ type Stream struct {
 	Width *int `json:"width"`
 }
 
-func (Stream) IsReactableContent()              {}
-func (Stream) IsFeaturedItemContent()           {}
-func (Stream) IsShareTarget()                   {}
-func (Stream) IsTaggedContent()                 {}
-func (Stream) IsPersonalSectionChannelContent() {}
 func (Stream) IsShelfContent()                  {}
+func (Stream) IsPersonalSectionChannelContent() {}
+func (Stream) IsTaggedContent()                 {}
+func (Stream) IsShareTarget()                   {}
+func (Stream) IsReactableContent()              {}
 func (Stream) IsFeedItemContent()               {}
+func (Stream) IsFeaturedItemContent()           {}
 
 // StreamBitrate represents the bitrate of stream session by time.
 type StreamBitrate struct {
@@ -21156,6 +21178,22 @@ type UpdateWhisperThreadPayload struct {
 	Thread *WhisperThread `json:"thread"`
 }
 
+// Generates an image URL to upload to.
+type UploadCompetitionImageInput struct {
+	// Unique Competition ID.
+	CompetitionID string `json:"competitionID"`
+	// Type of image being uploaded.
+	ImageType CompetitionImageType `json:"imageType"`
+}
+
+// Data required to upload an image to the competition.
+type UploadCompetitionImagePayload struct {
+	// Used for upload competition image errors.
+	Error *CompetitionUploadImageError `json:"error"`
+	// The metadata required to access an image for a competition.
+	Image *CompetitionImageUpload `json:"image"`
+}
+
 // Individual upload config.
 type UploadConfig struct {
 	// Upload id used when listening to pubsub.
@@ -21790,11 +21828,11 @@ type User struct {
 	WithholdingTaxDetail *WithholdingTaxDetail `json:"withholdingTaxDetail"`
 }
 
-func (User) IsFeaturedItemContent()       {}
-func (User) IsTitleTokenNode()            {}
-func (User) IsTaggedContent()             {}
 func (User) IsPredictionEventActor()      {}
+func (User) IsTaggedContent()             {}
+func (User) IsTitleTokenNode()            {}
 func (User) IsPersonalSectionTitleToken() {}
+func (User) IsFeaturedItemContent()       {}
 func (User) IsOnsiteNotificationContent() {}
 func (User) IsFragmentContent()           {}
 
@@ -22545,19 +22583,19 @@ type Video struct {
 	ViewableAt *time.Time `json:"viewableAt"`
 }
 
-func (Video) IsReactableContent()              {}
-func (Video) IsFeaturedItemContent()           {}
-func (Video) IsShareTarget()                   {}
-func (Video) IsTaggedContent()                 {}
+func (Video) IsPostEmbed()                     {}
 func (Video) IsShelfContent()                  {}
 func (Video) IsCollectionItem()                {}
-func (Video) IsFeedItemContent()               {}
-func (Video) IsRecommendationFeedbackContent() {}
-func (Video) IsFeedEmbed()                     {}
-func (Video) IsOnsiteNotificationContent()     {}
-func (Video) IsPremiereItem()                  {}
-func (Video) IsPostEmbed()                     {}
 func (Video) IsVideoShelfItem()                {}
+func (Video) IsTaggedContent()                 {}
+func (Video) IsPremiereItem()                  {}
+func (Video) IsShareTarget()                   {}
+func (Video) IsRecommendationFeedbackContent() {}
+func (Video) IsReactableContent()              {}
+func (Video) IsFeedItemContent()               {}
+func (Video) IsFeaturedItemContent()           {}
+func (Video) IsOnsiteNotificationContent()     {}
+func (Video) IsFeedEmbed()                     {}
 
 // A video bookmark.
 type VideoBookmark struct {
@@ -22812,9 +22850,9 @@ type VideoOEmbed struct {
 	Width        int              `json:"width"`
 }
 
-func (VideoOEmbed) IsFeedEmbed() {}
-func (VideoOEmbed) IsOEmbed()    {}
 func (VideoOEmbed) IsPostEmbed() {}
+func (VideoOEmbed) IsOEmbed()    {}
+func (VideoOEmbed) IsFeedEmbed() {}
 
 // Options to include private videos.
 type VideoOptions struct {
@@ -28748,6 +28786,53 @@ func (e CompetitionErrorCode) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
+// The competition Image type sent by the user to determine what image is being uploaded to the competition.
+type CompetitionImageType string
+
+const (
+	// Banner image for the competition.
+	CompetitionImageTypeBanner CompetitionImageType = "BANNER"
+	// Thumbnail image for the competition.
+	CompetitionImageTypeThumbnail CompetitionImageType = "THUMBNAIL"
+	// Image type is unknown.
+	CompetitionImageTypeUnknown CompetitionImageType = "UNKNOWN"
+)
+
+var AllCompetitionImageType = []CompetitionImageType{
+	CompetitionImageTypeBanner,
+	CompetitionImageTypeThumbnail,
+	CompetitionImageTypeUnknown,
+}
+
+func (e CompetitionImageType) IsValid() bool {
+	switch e {
+	case CompetitionImageTypeBanner, CompetitionImageTypeThumbnail, CompetitionImageTypeUnknown:
+		return true
+	}
+	return false
+}
+
+func (e CompetitionImageType) String() string {
+	return string(e)
+}
+
+func (e *CompetitionImageType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CompetitionImageType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CompetitionImageType", str)
+	}
+	return nil
+}
+
+func (e CompetitionImageType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 // The participant type signifies whether the competition will be played as team or solo.
 type CompetitionParticipantType string
 
@@ -28954,6 +29039,53 @@ func (e *CompetitionState) UnmarshalGQL(v interface{}) error {
 }
 
 func (e CompetitionState) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+// Enum for user errors.
+type CompetitionUploadImageErrorCode string
+
+const (
+	// Used when an argument is missing but was required.
+	CompetitionUploadImageErrorCodeRequiredArgument CompetitionUploadImageErrorCode = "REQUIRED_ARGUMENT"
+	// Used when an argument that is passed in is invalid in some way.
+	CompetitionUploadImageErrorCodeInvalidArgument CompetitionUploadImageErrorCode = "INVALID_ARGUMENT"
+	// Used when the error is unknown.
+	CompetitionUploadImageErrorCodeUnknown CompetitionUploadImageErrorCode = "UNKNOWN"
+)
+
+var AllCompetitionUploadImageErrorCode = []CompetitionUploadImageErrorCode{
+	CompetitionUploadImageErrorCodeRequiredArgument,
+	CompetitionUploadImageErrorCodeInvalidArgument,
+	CompetitionUploadImageErrorCodeUnknown,
+}
+
+func (e CompetitionUploadImageErrorCode) IsValid() bool {
+	switch e {
+	case CompetitionUploadImageErrorCodeRequiredArgument, CompetitionUploadImageErrorCodeInvalidArgument, CompetitionUploadImageErrorCodeUnknown:
+		return true
+	}
+	return false
+}
+
+func (e CompetitionUploadImageErrorCode) String() string {
+	return string(e)
+}
+
+func (e *CompetitionUploadImageErrorCode) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = CompetitionUploadImageErrorCode(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid CompetitionUploadImageErrorCode", str)
+	}
+	return nil
+}
+
+func (e CompetitionUploadImageErrorCode) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 

@@ -44,6 +44,9 @@ github.com/google/go-querystring/query
 # github.com/kelseyhightower/envconfig v1.4.0 => github.com/bsdlp/envconfig v1.5.0
 ## explicit
 github.com/kelseyhightower/envconfig
+# github.com/meinside/keyvalue.xyz-go v0.0.2
+## explicit
+github.com/meinside/keyvalue.xyz-go
 # github.com/pkg/errors v0.9.1
 github.com/pkg/errors
 # github.com/vektah/gqlparser/v2 v2.1.0

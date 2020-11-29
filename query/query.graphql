@@ -11,12 +11,13 @@ query GetCurrentlyWatching {
                         title
                     }
                     channel {
-                        socialmedias {
+                        socialMedias {
                             name
                             title
                             url
                         }
                     }
+                    id
                     displayName
                     profileURL
                 }
