@@ -23,6 +23,12 @@ github.com/Yamashou/gqlgenc/graphqljson
 github.com/Yamashou/gqlgenc/introspection
 # github.com/agnivade/levenshtein v1.1.0
 github.com/agnivade/levenshtein
+# github.com/aws/aws-lambda-go v1.20.0
+## explicit
+github.com/aws/aws-lambda-go/lambda
+github.com/aws/aws-lambda-go/lambda/handlertrace
+github.com/aws/aws-lambda-go/lambda/messages
+github.com/aws/aws-lambda-go/lambdacontext
 # github.com/cenkalti/backoff v2.1.1+incompatible
 github.com/cenkalti/backoff
 # github.com/dghubble/go-twitter v0.0.0-20201011215211-4b180d0cc78d

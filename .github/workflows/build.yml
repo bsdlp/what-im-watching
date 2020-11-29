@@ -4,12 +4,13 @@ on:
       - main
   pull_request:
     branches:
-name: build and push
+name: lambdas
 jobs:
-  bot:
+  build_lambdas:
     strategy:
       matrix:
         go-version: [1.15.5]
+        cdk-version: [1.75.0]
     runs-on: ubuntu-latest
     steps:
       - name: install go
@@ -18,25 +19,64 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: checkout code
         uses: actions/checkout@v2
-      - name: setup qemu
-        uses: docker/setup-qemu-action@v1
-      - name: setup docker
-        uses: docker/setup-buildx-action@v1
-      - name: login to github docker registry
-        uses: docker/login-action@v1
+      - name: go build
+        env:
+          CGO_ENABLED: "0"
+          GOOS: linux
+        run: |
+          mkdir build
+          go build -a -ldflags='-extldflags=-static' -o ./build/ .
+      - name: archive built binaries
+        uses: actions/upload-artifact@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.CR_PAT }}
-      - name: docker build and push
-        if: github.ref != 'refs/heads/main'
-        uses: docker/build-push-action@v2
+          name: binaries
+          path: ${{ github.workspace }}
+  cdk_diff:
+    if: github.ref != 'refs/heads/main'
+    needs: [build_lambdas]
+    runs-on: ubuntu-latest
+    steps:
+      - name: download binaries
+        id: download
+        uses: actions/download-artifact@v2
         with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.event.pull_request.head.ref }}
-      - name: docker build and push
-        if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v2
+          name: binaries
+          path: ${{ github.workspace }}
+      - name: fix executable permissions
+        run: chmod 755 -R ${{ github.workspace }}/build
+      - name: cdk diff
+        uses: youyo/aws-cdk-github-actions@v1
         with:
-          push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          cdk_subcommand: 'diff'
+          cdk_version: ${{ matrix.cdk-version }}
+          working_dir: 'infra'
+        env:
+          AWS_DEFAULT_REGION: 'us-west-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  cdk_deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: [build_lambdas]
+    runs-on: ubuntu-latest
+    steps:
+      - name: download binaries
+        id: download
+        uses: actions/download-artifact@v2
+        with:
+          name: binaries
+          path: ${{ github.workspace }}
+      - name: fix executable permissions
+        run: chmod 755 -R ${{ github.workspace }}/build
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v1
+        with:
+          cdk_subcommand: 'deploy --require-approval never'
+          cdk_version: ${{ matrix.cdk-version }}
+          working_dir: 'infra'
+        env:
+          AWS_DEFAULT_REGION: 'us-west-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

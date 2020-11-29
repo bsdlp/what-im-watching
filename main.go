@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/bsdlp/what-im-watching/twitch"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
@@ -13,8 +15,8 @@ import (
 )
 
 type Config struct {
-	OAuthToken          string `envconfig:"OAUTH_TOKEN" required:"true"`
-	ClientId            string `split_words:"true" required:"true"`
+	TwitchOAuthToken    string `envconfig:"TWITCH_OAUTH_TOKEN" required:"true"`
+	TwitchClientId      string `split_words:"true" required:"true"`
 	TwitchGqlEndpoint   string `split_words:"true" default:"https://gql.twitch.tv/gql"`
 	TwitterApiKey       string `required:"true" split_words:"true"`
 	TwitterApiSecret    string `required:"true" split_words:"true"`
@@ -34,28 +36,32 @@ func main() {
 	twitterToken := oauth1.NewToken(cfg.TwitterAccessToken, cfg.TwitterAccessSecret)
 	twitterClient := twitter.NewClient(twitterOAuthConfig.Client(oauth1.NoContext, twitterToken))
 
-	client := twitch.NewClient(http.DefaultClient, cfg.TwitchGqlEndpoint, setAuth(cfg.OAuthToken), setClientId(cfg.ClientId))
-	ctx := context.Background()
-	currentlyWatching, err := client.GetCurrentlyWatching(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if currentlyWatching.CurrentUser == nil {
-		log.Fatal("current user is nil")
-	}
-	if currentlyWatching.CurrentUser.Activity == nil {
-		msg := fmt.Sprintf("%s is not currently watching anything", currentlyWatching.CurrentUser.DisplayName)
-		log.Println(msg)
-		return
-	}
+	client := twitch.NewClient(http.DefaultClient, cfg.TwitchGqlEndpoint, setAuth(cfg.TwitchOAuthToken), setClientId(cfg.TwitchClientId))
 
-	streamer := currentlyWatching.CurrentUser.Activity.User
-	msg := fmt.Sprintf("%s is now watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
-	_, _, err = twitterClient.Statuses.Update(msg, nil)
-	if err != nil {
-		log.Printf("error posting: %s", err)
-	}
-	log.Println(msg)
+	lambda.Start(func(ctx context.Context) error {
+		currentlyWatching, err := client.GetCurrentlyWatching(ctx)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+		if currentlyWatching.CurrentUser == nil {
+			err := errors.New("current user is nil")
+			return err
+		}
+		if currentlyWatching.CurrentUser.Activity == nil {
+			msg := fmt.Sprintf("%s is not currently watching anything", currentlyWatching.CurrentUser.DisplayName)
+			log.Println(msg)
+			return nil
+		}
+
+		streamer := currentlyWatching.CurrentUser.Activity.User
+		msg := fmt.Sprintf("%s is now watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
+		_, _, err = twitterClient.Statuses.Update(msg, nil)
+		if err != nil {
+			return fmt.Errorf("error posting: %s", err)
+		}
+		return nil
+	})
 }
 
 func setAuth(oauthToken string) func(*http.Request) {
