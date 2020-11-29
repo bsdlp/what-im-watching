@@ -157,7 +157,8 @@ func (kv *keyValueStore) SetPreviouslyWatching(userId, streamId string, ttl time
 	}
 
 	params := &dynamodb.PutItemInput{
-		Item: av,
+		Item:      av,
+		TableName: aws.String(kv.tableName),
 	}
 	_, err = kv.ddb.PutItem(params)
 	return err
