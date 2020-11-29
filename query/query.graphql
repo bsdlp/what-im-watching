@@ -1,5 +1,6 @@
 query GetCurrentlyWatching {
     currentUser() {
+        id
         displayName
         activity {
             ... on Watching {

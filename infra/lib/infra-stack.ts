@@ -17,10 +17,6 @@ export class InfraStack extends cdk.Stack {
         name: "UserId",
         type: dynamodb.AttributeType.STRING,
       },
-      sortKey: {
-        name: "Timestamp",
-        type: dynamodb.AttributeType.NUMBER,
-      },
       timeToLiveAttribute: "ExpirationTime",
     })
 
@@ -45,6 +41,8 @@ export class InfraStack extends cdk.Stack {
         "TWITTER_API_SECRET": secrets.secretValueFromJson("TWITTER_API_SECRET").toString(),
         "TWITTER_ACCESS_TOKEN": secrets.secretValueFromJson("TWITTER_ACCESS_TOKEN").toString(),
         "TWITTER_ACCESS_SECRET": secrets.secretValueFromJson("TWITTER_ACCESS_SECRET").toString(),
+        "PREVIOUSLY_WATCHING_TABLE_NAME": whatImWatchingTable.tableName,
+        "PREVIOUSLY_WATCHING_EVENT_TTL": "2h",
       },
       logRetention: logs.RetentionDays.THREE_DAYS,
     })

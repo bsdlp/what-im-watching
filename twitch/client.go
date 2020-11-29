@@ -565,6 +565,7 @@ type Mutation struct {
 }
 type GetCurrentlyWatching struct {
 	CurrentUser *struct {
+		ID          string "json:\"id\" graphql:\"id\""
 		DisplayName string "json:\"displayName\" graphql:\"displayName\""
 		Activity    *struct {
 			User *struct {
@@ -591,6 +592,7 @@ type GetCurrentlyWatching struct {
 
 const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
 	currentUser {
+		id
 		displayName
 		activity {
 			... on Watching {
