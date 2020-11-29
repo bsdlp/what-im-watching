@@ -6,15 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/bsdlp/what-im-watching/twitch"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	"github.com/kelseyhightower/envconfig"
-	keyvalue "github.com/meinside/keyvalue.xyz-go"
 )
 
 type Config struct {
@@ -41,11 +38,6 @@ func main() {
 
 	client := twitch.NewClient(http.DefaultClient, cfg.TwitchGqlEndpoint, setAuth(cfg.TwitchOAuthToken), setClientId(cfg.TwitchClientId))
 
-	kv, err := keyvalue.NewKeyValue(strconv.FormatInt(time.Now().Unix(), 10))
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	lambda.Start(func(ctx context.Context) error {
 		currentlyWatching, err := client.GetCurrentlyWatching(ctx)
 		if err != nil {
@@ -57,26 +49,12 @@ func main() {
 			return err
 		}
 		if currentlyWatching.CurrentUser.Activity == nil {
-			err = kv.SetAndValidate("")
-			if err != nil {
-				return fmt.Errorf("error setting last watching kv: %s", err)
-			}
 			msg := fmt.Sprintf("%s is not currently watching anything", currentlyWatching.CurrentUser.DisplayName)
 			log.Println(msg)
 			return nil
 		}
 
-		previouslyWatching, err := kv.Get()
-		if err != nil {
-			log.Printf("error from kv getting previously watching: %s", err)
-		}
-
 		streamer := currentlyWatching.CurrentUser.Activity.User
-
-		if previouslyWatching != "" && streamer.ID == previouslyWatching {
-			log.Printf("still watching %s", streamer.ID)
-			return nil
-		}
 
 		msg := fmt.Sprintf("%s is now watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
 		_, _, err = twitterClient.Statuses.Update(msg, nil)
@@ -84,10 +62,6 @@ func main() {
 			return fmt.Errorf("error posting: %s", err)
 		}
 
-		err = kv.SetAndValidate(streamer.ID)
-		if err != nil {
-			return fmt.Errorf("error setting last watching kv: %s", err)
-		}
 		return nil
 	})
 }

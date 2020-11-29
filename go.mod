@@ -9,7 +9,6 @@ require (
 	github.com/dghubble/go-twitter v0.0.0-20201011215211-4b180d0cc78d
 	github.com/dghubble/oauth1 v0.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/meinside/keyvalue.xyz-go v0.0.2
 	golang.org/x/tools v0.0.0-20201118215654-4d9c4f8a78b0 // indirect
 )
 
