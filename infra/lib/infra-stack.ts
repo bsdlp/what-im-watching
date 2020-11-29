@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import assets = require("@aws-cdk/aws-s3-assets");
+import dynamodb = require("@aws-cdk/aws-dynamodb");
 import events = require("@aws-cdk/aws-events");
 import events_targets = require("@aws-cdk/aws-events-targets");
 import lambda = require("@aws-cdk/aws-lambda");
@@ -10,6 +11,19 @@ import secrets_manager = require("@aws-cdk/aws-secretsmanager");
 export class InfraStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const whatImWatchingTable = new dynamodb.Table(this, "whatImPreviouslyWatching", {
+      partitionKey: {
+        name: "UserId",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "Timestamp",
+        type: dynamodb.AttributeType.NUMBER,
+      },
+      timeToLiveAttribute: "ExpirationTime",
+    })
+
     const whatImWatchingAsset = new assets.Asset(this, "whatImWatchingAsset", {
       path: path.join(__dirname, "../../build/"),
     })
@@ -34,6 +48,8 @@ export class InfraStack extends cdk.Stack {
       },
       logRetention: logs.RetentionDays.THREE_DAYS,
     })
+
+    whatImWatchingTable.grantReadWriteData(whatImWatchingLambda)
 
     new events.Rule(this, "everyFiveMinutes", {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5)),
