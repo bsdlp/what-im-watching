@@ -74,7 +74,6 @@ func main() {
 
 		if previouslyWatching == nil {
 			log.Println("not previously watching anything")
-			return nil
 		}
 
 		streamer := currentlyWatching.CurrentUser.Activity.User
@@ -84,9 +83,11 @@ func main() {
 			log.Printf("error setting previously watching: %s", err)
 		}
 
-		if previouslyWatching.StreamUserId == streamer.ID {
-			log.Printf("%s is still watching %s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName)
-			return nil
+		if previouslyWatching != nil {
+			if previouslyWatching.StreamUserId == streamer.ID {
+				log.Printf("%s is still watching %s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName)
+				return nil
+			}
 		}
 
 		msg := fmt.Sprintf("%s is now watching %s stream %s: %s\n%s", currentlyWatching.CurrentUser.DisplayName, streamer.DisplayName, streamer.BroadcastSettings.Game.DisplayName, streamer.BroadcastSettings.Title, streamer.ProfileURL)
