@@ -52,7 +52,7 @@ func main() {
 	}
 
 	lambda.Start(func(ctx context.Context) error {
-		currentlyWatching, err := client.GetCurrentlyWatching(ctx)
+		currentlyWatching, err := client.CurrentlyWatching(ctx)
 		if err != nil {
 			log.Println(err)
 			return err
@@ -78,7 +78,7 @@ func main() {
 
 		streamer := currentlyWatching.CurrentUser.Activity.User
 
-		err = kvs.SetPreviouslyWatching(currentlyWatching.CurrentUser.ID, streamer.ID, cfg.PreviouslyWatchingEventTtl)
+		err = kvs.SetPreviouslyWatching(currentlyWatching, cfg.PreviouslyWatchingEventTtl)
 		if err != nil {
 			log.Printf("error setting previously watching: %s", err)
 		}
@@ -116,6 +116,8 @@ type PreviouslyWatchingEvent struct {
 	UserId         string
 	Timestamp      dynamodbattribute.UnixTime
 	StreamUserId   string
+	StreamGame     string
+	StreamTitle    string
 	ExpirationTime dynamodbattribute.UnixTime
 }
 
@@ -145,11 +147,13 @@ func (kv *keyValueStore) GetPreviouslyWatching(userId string) (*PreviouslyWatchi
 	return &event, nil
 }
 
-func (kv *keyValueStore) SetPreviouslyWatching(userId, streamId string, ttl time.Duration) error {
+func (kv *keyValueStore) SetPreviouslyWatching(currentlyWatching *twitch.CurrentlyWatching, ttl time.Duration) error {
 	now := time.Now()
 	av, err := dynamodbattribute.MarshalMap(&PreviouslyWatchingEvent{
-		UserId:         userId,
-		StreamUserId:   streamId,
+		UserId:         currentlyWatching.CurrentUser.ID,
+		StreamUserId:   currentlyWatching.CurrentUser.Activity.User.ID,
+		StreamGame:     currentlyWatching.CurrentUser.Activity.User.BroadcastSettings.Game.DisplayName,
+		StreamTitle:    currentlyWatching.CurrentUser.Activity.User.BroadcastSettings.Title,
 		Timestamp:      dynamodbattribute.UnixTime(now),
 		ExpirationTime: dynamodbattribute.UnixTime(now.Add(ttl)),
 	})

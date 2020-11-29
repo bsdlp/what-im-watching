@@ -1,4 +1,4 @@
-query GetCurrentlyWatching {
+query CurrentlyWatching {
     currentUser() {
         id
         displayName

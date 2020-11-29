@@ -563,7 +563,7 @@ type Mutation struct {
 	VoteInPoll                                                       *VoteInPollPayload                                                       "json:\"voteInPoll\" graphql:\"voteInPoll\""
 	VoteInPollByChoiceIndex                                          *VoteInPollByChoiceIndexPayload                                          "json:\"voteInPollByChoiceIndex\" graphql:\"voteInPollByChoiceIndex\""
 }
-type GetCurrentlyWatching struct {
+type CurrentlyWatching struct {
 	CurrentUser *struct {
 		ID          string "json:\"id\" graphql:\"id\""
 		DisplayName string "json:\"displayName\" graphql:\"displayName\""
@@ -590,7 +590,7 @@ type GetCurrentlyWatching struct {
 	} "json:\"currentUser\" graphql:\"currentUser\""
 }
 
-const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
+const CurrentlyWatchingQuery = `query CurrentlyWatching {
 	currentUser {
 		id
 		displayName
@@ -620,11 +620,11 @@ const GetCurrentlyWatchingQuery = `query GetCurrentlyWatching {
 }
 `
 
-func (c *Client) GetCurrentlyWatching(ctx context.Context, httpRequestOptions ...client.HTTPRequestOption) (*GetCurrentlyWatching, error) {
+func (c *Client) CurrentlyWatching(ctx context.Context, httpRequestOptions ...client.HTTPRequestOption) (*CurrentlyWatching, error) {
 	vars := map[string]interface{}{}
 
-	var res GetCurrentlyWatching
-	if err := c.Client.Post(ctx, GetCurrentlyWatchingQuery, &res, vars, httpRequestOptions...); err != nil {
+	var res CurrentlyWatching
+	if err := c.Client.Post(ctx, CurrentlyWatchingQuery, &res, vars, httpRequestOptions...); err != nil {
 		return nil, err
 	}
 
