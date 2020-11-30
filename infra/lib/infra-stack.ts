@@ -18,6 +18,7 @@ export class InfraStack extends cdk.Stack {
         type: dynamodb.AttributeType.STRING,
       },
       timeToLiveAttribute: "ExpirationTime",
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     })
 
     const whatImWatchingAsset = new assets.Asset(this, "whatImWatchingAsset", {
